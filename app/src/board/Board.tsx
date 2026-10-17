@@ -29,6 +29,8 @@ const PROMOTIONS: Role[] = ["queen", "knight", "rook", "bishop"];
  * with `api.set`, so stepping through a line never re-renders the board's squares.
  */
 export function Board({ fen, orientation, lastMove, movable = "turn", onMove, shapes, className, nonce }: BoardProps) {
+  const outer = useRef<HTMLDivElement>(null);
+  const box = useRef<HTMLDivElement>(null);
   const el = useRef<HTMLDivElement>(null);
   const api = useRef<Api | null>(null);
   const onMoveRef = useRef(onMove);
@@ -40,7 +42,18 @@ export function Board({ fen, orientation, lastMove, movable = "turn", onMove, sh
   fenRef.current = fen;
 
   useEffect(() => {
-    if (!el.current) return;
+    if (!el.current || !outer.current || !box.current) return;
+    // Chessground rounds its board down to a multiple of 8 px, so size the board to one
+    // ourselves (centred in the space available): squares, pieces and frame then line up.
+    let size = 0;
+    const fit = () => {
+      const s = Math.max(8, Math.floor(outer.current!.clientWidth / 8) * 8);
+      if (s === size) return false;
+      size = s;
+      box.current!.style.width = box.current!.style.height = `${s}px`;
+      return true;
+    };
+    fit();
     // start from the real position: otherwise chessground would animate in from the
     // standard opening setup on the first update
     const turn0 = fenRef.current.split(" ")[1] === "b" ? "black" : "white";
@@ -68,15 +81,11 @@ export function Board({ fen, orientation, lastMove, movable = "turn", onMove, sh
     });
     api.current = cg;
     let frame = 0;
-    let width = 0;
-    const ro = new ResizeObserver(([entry]) => {
-      const w = Math.round(entry.contentRect.width);
-      if (w === width) return;
-      width = w;
+    const ro = new ResizeObserver(() => {
       cancelAnimationFrame(frame);
-      frame = requestAnimationFrame(() => cg.redrawAll());
+      frame = requestAnimationFrame(() => fit() && cg.redrawAll());
     });
-    ro.observe(el.current);
+    ro.observe(outer.current);
     return () => {
       ro.disconnect();
       cg.destroy();
@@ -124,11 +133,13 @@ export function Board({ fen, orientation, lastMove, movable = "turn", onMove, sh
 
   return (
     <div
-      className={`board board-${style} relative aspect-square w-full select-none ${className ?? ""}`}
+      ref={outer}
+      className={`board board-${style} flex aspect-square w-full select-none items-center justify-center ${className ?? ""}`}
       style={{ ["--board-image" as string]: BOARD_IMAGES[style] }}
     >
-      <div ref={el} style={{ width: "100%", height: "100%" }} />
-      {promo && (
+      <div ref={box} className="relative shrink-0">
+        <div ref={el} style={{ width: "100%", height: "100%" }} />
+        {promo && (
         <div className="absolute inset-0 z-20 bg-black/30" onClick={() => choose(null)}>
           <div
             className="absolute flex w-[12.5%] flex-col overflow-hidden rounded-md shadow-2xl"
@@ -153,7 +164,8 @@ export function Board({ fen, orientation, lastMove, movable = "turn", onMove, sh
             ))}
           </div>
         </div>
-      )}
+        )}
+      </div>
     </div>
   );
 }
