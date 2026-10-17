@@ -1,0 +1,13 @@
+# generated from the PDF on this machine; never commit or publish the book's content
+app/public/content/
+app/public/qa/
+pipeline/build/
+pipeline/.venv/
+pipeline/__pycache__/
+pipeline/tests/__pycache__/
+.pytest_cache/
+
+app/node_modules/
+app/dist/
+app/public/engine/
+.DS_Store
