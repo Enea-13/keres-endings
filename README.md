@@ -4,11 +4,14 @@ A local app for working through Paul Keres' *Practical Chess Endings* with a liv
 every diagram is a real position, every move printed in the text is clickable, and each
 position can be trained ("guess the moves") or played out against Stockfish.
 
-For personal use. The book's text and diagrams are extracted on this machine from your
-PDF into `app/public/content/` and `app/public/qa/`. Both folders are git-ignored, so the
-book's content is never committed or published.
+The book itself is not part of this repository. You supply your own copy as a PDF, and its
+text and diagrams are extracted on your machine into `app/public/content/` and
+`app/public/qa/`. Both folders are git-ignored, so the book's content is never committed or
+published (see [Disclaimer](#disclaimer)).
 
 ## Run it
+
+Put your PDF of the book at `book.pdf` in the project root (it is git-ignored), then:
 
 ```bash
 ./start.sh
@@ -20,7 +23,7 @@ serve the app.
 
 - `./start.sh --dev` runs the Vite dev server with hot reload (http://localhost:5317).
 - `./start.sh --rebuild-content` re-extracts everything from the PDF.
-- If the PDF is not at its default Desktop location, use `KERES_PDF=/path/to/book.pdf ./start.sh`.
+- To read the PDF from somewhere else, use `KERES_PDF=/path/to/book.pdf ./start.sh`.
 
 ## Using the app
 
@@ -101,7 +104,21 @@ cd pipeline && .venv/bin/python -m pytest -q
 cd app && npm test
 ```
 
+## Disclaimer
+
+This is an independent project. It is not affiliated with or endorsed by Paul Keres' estate
+or the book's publishers. The repository contains no text, diagrams or scans from *Practical
+Chess Endings*, apart from the short phrases in `pipeline/overrides.json` that locate each
+manual fix in the text. The app only works with a copy of the book you own.
+
+## License
+
+The code is licensed under the GNU General Public License v3.0 or later (see
+[LICENSE](LICENSE)), like chessground, chessops and Stockfish, which it builds on. The
+cburnett piece set keeps its own license, CC BY-SA 3.0.
+
 ## Credits
 
 Chess pieces: cburnett set by Colin M. L. Burnett (CC BY-SA 3.0). Board: chessground (GPL-3.0).
 Move logic: chessops (GPL-3.0). Engine: Stockfish via stockfish.js (GPL-3.0).
+Pipeline: PyMuPDF (AGPL-3.0) and python-chess (GPL-3.0).

@@ -3,11 +3,11 @@
 #   ./start.sh          build (first time only) and open the app
 #   ./start.sh --dev    run the Vite dev server instead (hot reload)
 #   ./start.sh --rebuild-content   re-extract everything from the PDF
-# The PDF path can be overridden with KERES_PDF=/path/to/book.pdf
+# The book is read from book.pdf in this folder; override with KERES_PDF=/path/to/book.pdf
 set -euo pipefail
 cd "$(dirname "$0")"
 
-export KERES_PDF="${KERES_PDF:-$HOME/Desktop/Practical Chess Endings with modern chess notation (Paul Keres).pdf}"
+export KERES_PDF="${KERES_PDF:-$PWD/book.pdf}"
 
 if [ ! -x pipeline/.venv/bin/python ]; then
   echo "Setting up the Python pipeline…"
@@ -19,7 +19,7 @@ fi
 if [ ! -f app/public/content/toc.json ] || [ "${1:-}" = "--rebuild-content" ]; then
   if [ ! -f "$KERES_PDF" ]; then
     echo "Book PDF not found at: $KERES_PDF" >&2
-    echo "Set KERES_PDF to its location and run again." >&2
+    echo "Copy your PDF of the book to book.pdf here, or set KERES_PDF to its location." >&2
     exit 1
   fi
   echo "Building the book's content from the PDF (about a minute)…"

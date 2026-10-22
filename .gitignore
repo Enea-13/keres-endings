@@ -1,4 +1,5 @@
-# generated from the PDF on this machine; never commit or publish the book's content
+# the book and everything generated from it on this machine; never commit or publish it
+*.pdf
 app/public/content/
 app/public/qa/
 pipeline/build/
