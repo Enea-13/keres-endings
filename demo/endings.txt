@@ -1,0 +1,54 @@
+# 1 King and Pawn Endings
+
+With only kings and pawns left, every tempo counts. The three positions in this chapter show ideas that decide many pawn endings: the king in front of its pawn, the race against a passed pawn, and a king that heads for two goals at once.
+
+## King on the sixth rank
+
+[diagram 1: 4k3/8/4K3/4P3/8/8/8/8]
+
+When the king stands on the sixth rank in front of its pawn, the pawn queens whoever is to move. With Black to move, the white king steps aside and the pawn walks through: **1 ... ♔f8 2 ♔d7 ♔f7 3 e6+ ♔f8 4 e7+** and it promotes next move.
+
+With White to move, Black has the opposition after 1 ♔d6 ♔d8, but the pawn gains the tempo back: 2 e6 ♔e8 3 e7 ♔f7 4 ♔d7, and nothing stops it.
+
+## The rule of the square
+
+[diagram 2: k7/8/8/8/2p5/6K1/8/8]
+
+Can the white king catch the pawn? Picture the square between the pawn and its promotion square, with corners on c4, c1, f1 and f4. If the king stands inside it, or can step into it on its move, the pawn is caught. With White to move, **1 ♔f3 c3 2 ♔e2 c2 3 ♔d2** and the pawn falls.
+
+With Black to move, the square shrinks first, and 1 ... c3 2 ♔f2 c2 3 ♔e2 c1♕ promotes just in time.
+
+@position {"match": "the white king on h3", "base": 2, "edit": ["K@h3"], "stm": "w", "note": "Diagram 2 with the white king on h3"}
+With the white king on h3, even White to move is too late: 1 ♔g3 c3 2 ♔f2 c2 3 ♔e2 c1♕.
+
+## The Réti manoeuvre
+
+[diagram 3: 7K/8/k1P5/7p/8/8/8/8]
+> **R. Réti**, 1921
+
+The white king is far behind the h-pawn, and the black king is close to the c-pawn, so it looks as if nothing can save White. But a king on the diagonal moves towards two goals at once: it chases the h-pawn and heads for d7 to escort its own pawn.
+
+| 1 | ♔g7 | h4 |
+| 2 | ♔f6 | ♔b6 |
+| 3 | ♔e5 | ♔xc6 |
+| 4 | ♔f4 | |
+
+If Black races with 2 ... h3, then 3 ♔e7 h2 4 c7 ♔b7 5 ♔d7 and both sides queen. After 3 ... h3 instead, 4 ♔d6 h2 5 c7 h1♕ 6 c8♕ ends the same way. In the main line the king is in time: 4 ... h3 5 ♔g3 h2 6 ♔xh2, and the game is drawn.
+
+# 2 Rook Endings
+
+Two positions every player should know: the Lucena position, which wins, and the Philidor position, which draws. Many rook endings with a single pawn come down to one of them.
+
+## The Lucena position
+
+[diagram 4: 3K4/3P2k1/8/8/8/8/2r5/5R2]
+
+The pawn is on the seventh rank and the black king is cut off on the g-file, but the white king is stuck in front of its pawn: the black rook guards the c-file, and once the king steps out to e7, the checks begin. White wins by building a bridge, bringing the rook to the fourth rank so that it can block a check later. **1 ♖f4! ♖c1 2 ♔e7 ♖e1+ 3 ♔d6 ♖d1+ 4 ♔e6 ♖e1+ 5 ♔d5 ♖d1+ 6 ♖d4** and the checks are over.
+
+## The Philidor position
+
+[diagram 5: 4k3/R7/7r/3KP3/8/8/8/8]
+
+Black draws because the rook holds the sixth rank, so the white king cannot advance. Black waits on that rank until the pawn moves forward. Then the white king has nothing left to hide behind, and the rook drops back to check it from a distance: **1 ... ♖b6 2 e6 ♖b1! 3 ♔d6 ♖d1+ 4 ♔e5 ♖e1+ 5 ♔d6 ♖d1+** with perpetual check.
+
+The rook has to stay active. Retreating to the back rank loses at once: 1 ... ♖h8? 2 ♖a8+ ♔f7 3 ♖xh8, a skewer along the eighth rank.

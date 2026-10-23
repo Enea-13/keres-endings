@@ -12,12 +12,14 @@ import sys
 import unicodedata
 from collections import Counter
 from dataclasses import replace
+from pathlib import Path
 
 import positions
 from config import BUILD, CONTENT, ROOT
 from notation import (DIAGRAM_REF_RE, SIDE_HINT_RE, Anchored, Book, Node, Unit, play,
                       row_sequence, scan_sequences, try_play)
 
+BOOK = {"title": "Practical Chess Endings", "author": "Paul Keres"}
 CAPTION_MAX = 90
 SIDE_TO_MOVE_RE = re.compile(r"\b(White|Black)(?:,)? (?:to|has the) (?:move|play)\b")
 
@@ -389,10 +391,11 @@ class Builder:
             out["note"] = u.note
         return out
 
-    def write(self) -> None:
-        if CONTENT.exists():
-            shutil.rmtree(CONTENT)
-        (CONTENT / "sections").mkdir(parents=True)
+    def write(self, out: Path = CONTENT, build: Path = BUILD, meta: dict = BOOK) -> None:
+        """Content into `out` (and the QA images next to it), the report into `build`."""
+        if out.exists():
+            shutil.rmtree(out)
+        (out / "sections").mkdir(parents=True)
         stats = {}
         for i, sid in enumerate(self.order):
             sec = self.sections[sid]
@@ -401,15 +404,14 @@ class Builder:
             data["units"] = units
             data["prev"] = self.order[i - 1] if i else None
             data["next"] = self.order[i + 1] if i + 1 < len(self.order) else None
-            (CONTENT / "sections" / f"{sid}.json").write_text(
+            (out / "sections" / f"{sid}.json").write_text(
                 json.dumps(data, ensure_ascii=False, separators=(",", ":")))
             ds = [b["n"] for b in sec["blocks"] if b["type"] == "diagram"]
             stats[sid] = {"diagrams": [ds[0], ds[-1]] if ds else None, "count": len(ds)}
         toc = build_toc(self.stream["outline"], section_ids(self.stream["outline"]), stats)
-        (CONTENT / "toc.json").write_text(json.dumps(
-            {"title": "Practical Chess Endings", "author": "Paul Keres", "toc": toc,
-             "order": self.order}, ensure_ascii=False, indent=1))
-        self.write_qa()
+        (out / "toc.json").write_text(json.dumps(
+            {**meta, "toc": toc, "order": self.order}, ensure_ascii=False, indent=1))
+        self.write_qa(out, build)
         rep = self.report
         rep["how"] = dict(rep["how"])
         rep["moves"] = dict(rep["moves"])
@@ -419,7 +421,8 @@ class Builder:
         rep["misprints"] = self.book.misprints
         rep["hypotheticals"] = {h["id"]: len(self.book.units[h["id"]].nodes) if h["id"] in self.book.units else None
                                 for h in self.hypotheticals}
-        (BUILD / "report.json").write_text(json.dumps(rep, ensure_ascii=False, indent=1))
+        build.mkdir(parents=True, exist_ok=True)
+        (build / "report.json").write_text(json.dumps(rep, ensure_ascii=False, indent=1))
         seqs = sum(v for v in rep["how"].values())
         print(f"sections {len(self.order)}  units {rep['units']}  nodes {rep['unit_nodes']}")
         print(f"sequences {seqs}: " + ", ".join(f"{k} {v}" for k, v in sorted(rep["how"].items())))
@@ -432,10 +435,10 @@ class Builder:
         print(f"hypothetical positions {len(rep['hypotheticals'])}, unused: {unused}")
 
 
-    def write_qa(self) -> None:
+    def write_qa(self, out: Path, build: Path) -> None:
         """Data for the app's /qa page: every diagram with what was recognised, plus the
         sequences that could not be attached to a position."""
-        qa_dir = CONTENT.parent / "qa"
+        qa_dir = out.parent / "qa"
         if qa_dir.exists():
             shutil.rmtree(qa_dir)
         qa_dir.mkdir(parents=True)
@@ -446,13 +449,13 @@ class Builder:
                     section_of[b["n"]] = sid
         diagrams = []
         for n, info in sorted(self.diagrams.items()):
-            src = BUILD / "diagrams" / f"{n:03d}.png"
+            src = build / "diagrams" / f"{n:03d}.png"
             if src.exists():
                 shutil.copy(src, qa_dir / f"{n:03d}.png")
             diagrams.append({"n": n, "section": section_of.get(n),
                              "status": self.report["diagrams"].get(n, "?"),
                              "positions": info["positions"], "weak": info.get("weak", [])})
-        (CONTENT / "qa.json").write_text(json.dumps({
+        (out / "qa.json").write_text(json.dumps({
             "diagrams": diagrams,
             "failed": self.report["failed"],
             "partial": self.report["partial"],
