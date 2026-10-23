@@ -1,7 +1,7 @@
 import { AnimatePresence, motion } from "motion/react";
 import { lazy, Suspense, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Link, useNavigate, useParams, useSearchParams } from "react-router-dom";
-import { fetchSection, prefetchSection } from "../content/api";
+import { DEMO, fetchSection, prefetchSection } from "../content/api";
 import { SectionIndex } from "../content/tree";
 import type { Section } from "../content/types";
 import { usePrefs } from "../store/prefs";
@@ -149,7 +149,7 @@ export function ReaderPage() {
               {section && index && (
                 <>
                   <header className="mb-8">
-                    <p className="smallcaps text-sm text-[var(--accent)]">page {section.page}</p>
+                    {!DEMO && <p className="smallcaps text-sm text-[var(--accent)]">page {section.page}</p>}
                     <h1 className={`section-title level-${section.level}`}>{section.title}</h1>
                   </header>
                   {mode === "guess" ? (

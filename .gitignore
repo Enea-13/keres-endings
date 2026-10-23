@@ -10,5 +10,6 @@ pipeline/tests/__pycache__/
 
 app/node_modules/
 app/dist/
+demo/build/
 app/public/engine/
 .DS_Store

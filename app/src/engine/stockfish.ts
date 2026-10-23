@@ -13,7 +13,7 @@ export interface SearchResult {
   score: Score | null;
 }
 
-const ENGINE_URL = "/engine/stockfish-19-lite-single.js";
+const ENGINE_URL = `${import.meta.env.BASE_URL}engine/stockfish-19-lite-single.js`;
 
 class Engine {
   private worker: Worker;

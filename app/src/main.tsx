@@ -15,19 +15,22 @@ import { HomePage } from "./ui/HomePage";
 
 const QaPage = lazy(() => import("./qa/QaPage").then((m) => ({ default: m.QaPage })));
 
-const router = createBrowserRouter([
-  { path: "/", element: <HomePage /> },
-  { path: "/read/:sectionId", element: <ReaderPage /> },
-  {
-    path: "/qa",
-    element: (
-      <Suspense fallback={null}>
-        <QaPage />
-      </Suspense>
-    ),
-  },
-  { path: "*", element: <HomePage /> },
-]);
+const router = createBrowserRouter(
+  [
+    { path: "/", element: <HomePage /> },
+    { path: "/read/:sectionId", element: <ReaderPage /> },
+    {
+      path: "/qa",
+      element: (
+        <Suspense fallback={null}>
+          <QaPage />
+        </Suspense>
+      ),
+    },
+    { path: "*", element: <HomePage /> },
+  ],
+  { basename: import.meta.env.BASE_URL },
+);
 
 function App() {
   const theme = usePrefs((s) => s.theme);

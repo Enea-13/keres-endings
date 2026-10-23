@@ -32,8 +32,8 @@ export function TopBar({ toc, sectionId, onModeChange }: { toc: Toc | null; sect
         </button>
       )}
       <Link to="/" className="brand">
-        <span className="brand-title">Practical Chess Endings</span>
-        <span className="brand-author">Paul Keres</span>
+        <span className="brand-title">{toc?.title}</span>
+        <span className="brand-author">{toc?.author}</span>
       </Link>
       {crumbs.length > 0 && (
         <nav aria-label="Breadcrumb" className="crumbs">

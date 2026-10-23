@@ -84,7 +84,7 @@ export function QaPage() {
                     <span className="text-xs text-[var(--ink-faint)]">{d.status}</span>
                   </div>
                   <div className="mt-2 flex items-start gap-2">
-                    <img src={`/qa/${String(d.n).padStart(3, "0")}.png`} alt={`Printed diagram ${d.n}`} className="w-[150px]" loading="lazy" />
+                    <img src={`${import.meta.env.BASE_URL}qa/${String(d.n).padStart(3, "0")}.png`} alt={`Printed diagram ${d.n}`} className="w-[150px]" loading="lazy" />
                     <div className="flex flex-col gap-1">
                       {d.positions.map((p) => (
                         <div key={p.id}>

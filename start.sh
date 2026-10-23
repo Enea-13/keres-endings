@@ -3,10 +3,12 @@
 #   ./start.sh          build (first time only) and open the app
 #   ./start.sh --dev    run the Vite dev server instead (hot reload)
 #   ./start.sh --rebuild-content   re-extract everything from the PDF
+#   ./start.sh --demo   build and open the demo instead (five positions, no PDF needed)
 # The book is read from book.pdf in this folder; override with KERES_PDF=/path/to/book.pdf
 set -euo pipefail
 cd "$(dirname "$0")"
 
+MODE="${1:-}"
 export KERES_PDF="${KERES_PDF:-$PWD/book.pdf}"
 
 if [ ! -x pipeline/.venv/bin/python ]; then
@@ -16,7 +18,10 @@ if [ ! -x pipeline/.venv/bin/python ]; then
   pipeline/.venv/bin/pip install -q -r pipeline/requirements.txt
 fi
 
-if [ ! -f app/public/content/toc.json ] || [ "${1:-}" = "--rebuild-content" ]; then
+if [ "$MODE" = "--demo" ]; then
+  echo "Building the demo content…"
+  (cd pipeline && .venv/bin/python demo.py)
+elif [ ! -f app/public/content/toc.json ] || [ "$MODE" = "--rebuild-content" ]; then
   if [ ! -f "$KERES_PDF" ]; then
     echo "Book PDF not found at: $KERES_PDF" >&2
     echo "Copy your PDF of the book to book.pdf here, or set KERES_PDF to its location." >&2
@@ -32,8 +37,12 @@ if [ ! -d app/node_modules ]; then
 fi
 
 cd app
-if [ "${1:-}" = "--dev" ]; then
+if [ "$MODE" = "--dev" ]; then
   exec npm run dev -- --open
 fi
-npm run build
+if [ "$MODE" = "--demo" ]; then
+  npm run build:demo
+else
+  npm run build
+fi
 exec npx vite preview --open

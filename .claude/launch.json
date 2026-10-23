@@ -6,6 +6,12 @@
       "runtimeExecutable": "npm",
       "runtimeArgs": ["--prefix", "app", "run", "dev"],
       "port": 5317
+    },
+    {
+      "name": "keres-demo",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["--prefix", "app", "run", "preview", "--", "--port", "5318"],
+      "port": 5318
     }
   ]
 }

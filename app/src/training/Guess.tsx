@@ -193,9 +193,9 @@ export function GuessPanel({ index }: { index: SectionIndex }) {
               </div>
             ) : fb?.kind === "variation" && fbNode ? (
               <div className="feedback feedback-maybe">
-                Keres also examines {moveNumberLabel(fbNode)}
+                The text also examines {moveNumberLabel(fbNode)}
                 <FigSan san={fbNode.san} />
-                {fbNode.annot}, but his main line goes differently. Try again.
+                {fbNode.annot}, but the main line goes differently. Try again.
               </div>
             ) : fb?.kind === "wrong" ? (
               <div className="feedback feedback-bad">✗ Not the book’s move. Try again, or ask for a hint.</div>
@@ -303,7 +303,7 @@ export function GuessText({ index, handlers }: { index: SectionIndex; handlers: 
       })}
       {!done && shown < plan.firstK.length - 1 && (
         <p className="mt-6 text-center text-sm italic text-[var(--ink-faint)]">
-          Keres’ commentary appears as you find the moves.
+          The commentary appears as you find the moves.
         </p>
       )}
     </MaskContext.Provider>

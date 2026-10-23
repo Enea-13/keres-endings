@@ -1,6 +1,9 @@
 import type { QaData, Section, Toc } from "./types";
 
-const BASE = "/content";
+const BASE = `${import.meta.env.BASE_URL}content`;
+
+/** Built with `vite build --mode demo`: the public demo content instead of the book. */
+export const DEMO = import.meta.env.MODE === "demo";
 const cache = new Map<string, Promise<unknown>>();
 
 function load<T>(path: string): Promise<T> {
