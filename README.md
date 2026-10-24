@@ -1,4 +1,4 @@
-# Keres · Practical Chess Endings — interactive study edition
+# Keres Endings — an unofficial companion to Paul Keres' *Practical Chess Endings*
 
 [![CI](https://github.com/Enea-13/keres-endings/actions/workflows/ci.yml/badge.svg)](https://github.com/Enea-13/keres-endings/actions/workflows/ci.yml)
 
